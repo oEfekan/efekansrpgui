@@ -1,0 +1,163 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+local Window = Library.CreateLib("EfekanSRP GUI", "DarkTheme")
+
+local RandomPetsWorld = Window:NewTab("Random Pets World")
+local RandomPetsWorldSection = RandomPetsWorld:NewSection("Main")
+
+--Toggle Feed
+getgenv().Feed = false
+RandomPetsWorldSection:NewToggle("Auto Feed", "Feeds your all equipped pets", function(state)
+    if state then
+		getgenv().Feed = true
+		while getgenv().Feed do
+			local pets = game.Players.LocalPlayer.Pets:GetChildren()
+			game:GetService("ReplicatedStorage").CreatureSystem.Events.FeedCreature:InvokeServer(pets[#pets].Name)
+			wait(0.1)
+		end
+	end
+    if not state then
+        getgenv().Feed = false
+    end
+end)
+
+--Toggle Auto collect food
+getgenv().Collect = false
+RandomPetsWorldSection:NewToggle("Auto Collect Food", "Collects the food at every zone", function(state)
+    if state then
+		getgenv().Collect = true
+		while getgenv().Collect do
+			wait(0.2)
+			local function tpcha(target)
+			game:GetService("ReplicatedStorage").PetManagementSystem.CollectFoodRequest:FireServer(1)
+			print("TpaCha")
+			local player = game.Players.LocalPlayer
+			local Cha = player.Character
+			Cha.HumanoidRootPart.CFrame = CFrame.new(target.Position)
+			end
+
+
+			for i,v in pairs(game.Workspace.SpawnPoints:GetChildren()) do
+				print(v)
+				if v then
+					for f,t in pairs(v:GetChildren()) do
+						if t.Name == "Food" and t:FindFirstChild("Current") then
+							print(t)
+							local cr = t:FindFirstChild("Current")
+							for e,c in pairs(cr:GetChildren()) do
+								if string.match(c.Name,"Meshes") then
+									print(c)
+									tpcha(c)
+									game:GetService("ReplicatedStorage").PetManagementSystem.CollectFoodRequest:FireServer(1)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+    if not state then
+        getgenv().Collect = false
+    end
+end)
+getgenv().Attack = false
+RandomPetsWorldSection:NewToggle("Auto Attack", "Auto Attack the monsters that are at your current zone", function(state)
+    if state then
+		getgenv().Attack = true
+		while getgenv().Attack do
+			local cur = game.Players.LocalPlayer.CurrentZone.Value
+
+			local sp = game.Workspace.SpawnPoints
+
+			for i,v in pairs(sp:GetChildren()) do
+				if string.find(v.Name,cur,1) then
+					if not string.find(v.Name,0,2) then
+						print(v)
+						for e,c in pairs(v:GetChildren()) do
+							if string.match(c.Name,"Spawn") then
+							game:GetService("ReplicatedStorage").PetManagementSystem.AttackMobsRequest:FireServer(c)
+							end
+						end
+					end
+				end
+			end
+			wait(4)
+		end
+	end
+    if not state then
+        getgenv().Attack = false
+    end
+end)
+getgenv().Coin = false
+RandomPetsWorldSection:NewToggle("Auto Collect Coin", "Collects Coin at everywhere", function(state)
+    if state then
+		getgenv().Coin = true
+		while getgenv().Coin do
+			local function tpcha(target)
+				print("TpaCha")
+				local player = game.Players.LocalPlayer
+				local Cha = player.Character
+				Cha.HumanoidRootPart.CFrame = CFrame.new(target.Position)
+			end
+
+			for i,v in pairs(game.Workspace:GetChildren()) do
+				if v:IsA("MeshPart") and v.Name == "Coin_Gold" then
+				tpcha(v)		
+				end
+			end
+			wait(0.1)
+		end
+	end
+    if not state then
+        getgenv().Coin = false
+    end
+end)
+getgenv().Diamond = false
+RandomPetsWorldSection:NewToggle("Auto Collect Diamond", "Collects Diamond at everywhere", function(state)
+    if state then
+		getgenv().Diamond = true
+		while getgenv().Diamond do
+			local function tpcha(target)
+				print("TpaCha")
+				local player = game.Players.LocalPlayer
+				local Cha = player.Character
+				Cha.HumanoidRootPart.CFrame = CFrame.new(target.Position)
+			end
+
+			for i,v in pairs(game.Workspace:GetChildren()) do
+				if v:IsA("MeshPart") and v.Name == "Diamond" then
+				tpcha(v)		
+				end
+			end
+			wait(0.1)
+		end
+	end
+    if not state then
+        getgenv().Diamond = false
+    end
+end)
+getgenv().Small = false
+RandomPetsWorldSection:NewToggle("Auto Collect Gems", "Collects Gems at everywhere", function(state)
+    if state then
+		getgenv().Small = true
+		while getgenv().Small do
+			local function tpcha(target)
+				print("TpaCha")
+				local player = game.Players.LocalPlayer
+				local Cha = player.Character
+				Cha.HumanoidRootPart.CFrame = CFrame.new(target.Position)
+			end
+
+			for i,v in pairs(game.Workspace:GetChildren()) do
+				if v:IsA("MeshPart") and v.Name == "Small" then
+				tpcha(v)		
+				end
+			end
+			wait(0.1)
+		end
+	end
+    if not state then
+        getgenv().Small = false
+    end
+end)
