@@ -61,6 +61,9 @@ RandomPetsWorldSection:NewToggle("Auto Collect Food", "Collects the food at ever
         getgenv().Collect = false
     end
 end)
+
+RandomPetsWorldSection:NewLabel("Your pet needs to be atleast 2 level or higher")
+
 getgenv().Attack = false
 RandomPetsWorldSection:NewToggle("Auto Attack", "Auto Attack the monsters that are at your current zone", function(state)
     if state then
